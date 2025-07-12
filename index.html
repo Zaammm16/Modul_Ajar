@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasbor Pembelajaran Web & Basis Data Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is structured as a single-page dashboard with a fixed top navigation bar. Content is organized into five logical, thematic sections: 'Dasar Web & Pengantar' (Web Basics & Introduction), 'Pengembangan Frontend' (HTML, CSS, JS), 'Backend & Basis Data' (Server-side, APIs, Database Concepts, Types, Design, Security), 'Proses & Praktik' (Deployment, Git, Security Threats), and 'Desain & Arsitektur' (UI/UX, Web App Types). This non-linear structure allows users to explore topics freely. Interactive elements include tabbed comparisons (languages, NoSQL types), interactive diagrams (CSS Box Model), and dynamic charts (OWASP Top 10) to make complex information digestible. -->
+    <!-- Visualization & Content Choices:
+        - Report Info: Backend language comparison (PHP vs Python vs Node.js). Goal: Compare. Viz/Method: Interactive Tabbed Cards. Interaction: Click tabs to reveal details. Library: HTML/CSS/JS.
+        - Report Info: OWASP Top 10 risks. Goal: Inform/Prioritize. Viz/Method: Doughnut Chart. Interaction: Static display with Chart.js tooltips. Library: Chart.js.
+        - Report Info: CSS Box Model. Goal: Explain. Viz/Method: Interactive nested diagram. Interaction: Hover to highlight and display name. Library: HTML/CSS/JS.
+        - Report Info: NoSQL Database Types (Document, Key-Value, Wide-Column, Graph). Goal: Inform/Explain. Viz/Method: Tabbed content display. Interaction: Click tabs to switch between NoSQL type details. Library: HTML/CSS/JS.
+        - Report Info: SQL vs NoSQL. Goal: Compare. Viz/Method: Side-by-side comparison cards. Interaction: Static display. Library: HTML/CSS.
+        - Report Info: Web Hosting Types. Goal: Inform/Compare. Viz/Method: Simple cards with key pros/cons. Interaction: Static display. Library: HTML/CSS.
+        - Report Info: SPA vs PWA. Goal: Compare. Viz/Method: Side-by-side comparison cards. Interaction: Static display. Library: HTML/CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 350px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link.active {
+            color: #2563EB; /* text-blue-600 */
+            border-bottom-color: #2563EB;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .tab-btn.active {
+            background-color: #3B82F6; /* bg-blue-500 */
+            color: white;
+        }
+        .box-model div {
+            transition: all 0.2s ease-in-out;
+        }
+        .nosql-tab-btn.active {
+            background-color: #10B981; /* bg-emerald-500 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+            <nav class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-xl md:text-2xl font-bold text-blue-600">Panduan Web & DB</h1>
+                    <div class="hidden md:flex items-center space-x-6">
+                        <a href="#dasar-web" class="nav-link text-slate-600 hover:text-blue-600 font-medium pb-1 border-b-2 border-transparent">Dasar Web & Pengantar</a>
+                        <a href="#frontend" class="nav-link text-slate-600 hover:text-blue-600 font-medium pb-1 border-b-2 border-transparent">Pengembangan Frontend</a>
+                        <a href="#backend-db" class="nav-link text-slate-600 hover:text-blue-600 font-medium pb-1 border-b-2 border-transparent">Backend & Basis Data</a>
+                        <a href="#proses-praktik" class="nav-link text-slate-600 hover:text-blue-600 font-medium pb-1 border-b-2 border-transparent">Proses & Praktik</a>
+                        <a href="#desain-arsitektur" class="nav-link text-slate-600 hover:text-blue-600 font-medium pb-1 border-b-2 border-transparent">Desain & Arsitektur</a>
+                    </div>
+                     <div class="md:hidden">
+                        <select id="mobile-nav" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="#dasar-web">Dasar Web & Pengantar</option>
+                            <option value="#frontend">Pengembangan Frontend</option>
+                            <option value="#backend-db">Backend & Basis Data</option>
+                            <option value="#proses-praktik">Proses & Praktik</option>
+                            <option value="#desain-arsitektur">Desain & Arsitektur</option>
+                        </select>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="flex-grow container mx-auto p-4 md:p-8">
+            
+            <section id="dasar-web" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 text-slate-900">Dasar Web & Pengantar</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Jelajahi bagaimana website bekerja, protokol dasarnya, dan konsep inti di balik basis data yang menggerakkan aplikasi modern.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-blue-700">Cara Kerja Website</h3>
+                        <p class="text-slate-600 mb-4">Website adalah kumpulan halaman web yang diakses daring. Setiap website berada pada server hosting. Peramban mengirim permintaan ke server DNS, yang mengubah URL menjadi alamat IP. Server merespons dengan data, memungkinkan pengguna melihat website.</p>
+                        <p class="text-slate-600 text-sm mt-4">Proses ini melibatkan *web crawlers* untuk *crawling*, *indexing*, dan *serving search results*.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-green-700">Protokol HTTP & HTTPS</h3>
+                        <p class="text-slate-600 mb-4">HTTP adalah protokol dasar untuk transmisi data di internet. Klien mengirim permintaan, server merespons. HTTPS menambahkan lapisan keamanan dengan enkripsi.</p>
+                        <ul class="list-disc list-inside text-sm text-slate-600 mt-4">
+                            <li>**GET**: Mengambil data.</li>
+                            <li>**POST**: Mengirim data untuk membuat sumber daya.</li>
+                            <li>**PUT**: Memperbarui sumber daya.</li>
+                            <li>**DELETE**: Menghapus sumber daya.</li>
+                            <li>**Caching**: Menyimpan salinan lokal untuk mempercepat pemuatan.</li>
+                        </ul>
+                    </div>
+                    <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-purple-700">Konsep Dasar Basis Data</h3>
+                        <p class="text-slate-600 mb-4">Basis data adalah koleksi data terorganisir untuk penyimpanan dan akses efisien. Sistem Manajemen Basis Data (DBMS) adalah perangkat lunak yang berinteraksi dengan basis data.</p>
+                        <p class="text-slate-600 text-sm mt-4">**Fungsi Utama DBMS:** Definisi Data (DDL), Manipulasi Data (DML), Kontrol Data (DCL), Manajemen Transaksi, Keamanan.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="frontend" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 text-slate-900">Pengembangan Frontend</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Mulai dari sini untuk memahami blok bangunan inti dari setiap website: HTML untuk struktur, CSS untuk gaya, dan JavaScript untuk interaktivitas.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-blue-700">HTML: Struktur Konten</h3>
+                        <p class="text-slate-600 mb-4">HTML (HyperText Markup Language) adalah kerangka dari semua halaman web. Ini mendefinisikan makna dan struktur konten.</p>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center"><span class="font-mono bg-blue-100 text-blue-800 rounded px-2 py-1 mr-2 text-xs">&lt;h1&gt;</span> Judul Utama</p>
+                            <p class="flex items-center"><span class="font-mono bg-blue-100 text-blue-800 rounded px-2 py-1 mr-2 text-xs">&lt;p&gt;</span> Paragraf Teks</p>
+                            <p class="flex items-center"><span class="font-mono bg-blue-100 text-blue-800 rounded px-2 py-1 mr-2 text-xs">&lt;a&gt;</span> Tautan/Link</p>
+                            <p class="flex items-center"><span class="font-mono bg-blue-100 text-blue-800 rounded px-2 py-1 mr-2 text-xs">&lt;img&gt;</span> Gambar</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-green-700">CSS: Styling & Tata Letak</h3>
+                        <p class="text-slate-600 mb-4">CSS (Cascading Style Sheets) digunakan untuk menata dan menata letak halaman web — misalnya, untuk mengubah font, warna, ukuran, dan jarak konten.</p>
+                        <div id="box-model-container" class="mt-4 p-2 bg-slate-100 rounded-lg text-center cursor-pointer">
+                            <p class="text-sm font-semibold mb-2">Model Kotak CSS Interaktif</p>
+                            <div id="margin" class="box-model bg-green-200 p-2 rounded-lg border-2 border-dashed border-green-400">
+                                <div id="border" class="box-model bg-yellow-200 p-2 border-2 border-solid border-yellow-400">
+                                    <div id="padding" class="box-model bg-blue-200 p-2">
+                                        <div id="content" class="box-model bg-white p-4 text-sm font-medium">Konten</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="box-model-label" class="mt-2 text-sm font-medium text-slate-700 h-5"></p>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-4">**Desain Responsif:** Media Queries, Flexbox, Grid untuk adaptasi layar.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-xl font-bold mb-4 text-amber-700">JavaScript: Interaktivitas</h3>
+                        <p class="text-slate-600 mb-4">JavaScript memungkinkan Anda membuat konten yang diperbarui secara dinamis, mengontrol multimedia, menganimasikan gambar, dan banyak lagi.</p>
+                         <ul class="space-y-2 text-slate-600 list-disc list-inside text-sm">
+                            <li>**Konsep Dasar:** Variabel, Tipe Data, Operator, Kontrol Alur, Fungsi.</li>
+                            <li>**Manipulasi DOM:** Mengubah struktur, gaya, dan konten halaman.</li>
+                            <li>**Penanganan Event:** Merespons interaksi pengguna (klik, input).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="backend-db" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 text-slate-900">Backend & Basis Data</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Jelajahi teknologi yang menggerakkan website dari balik layar, termasuk bahasa pemrograman backend, sistem database, dan API.</p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Perbandingan Bahasa Backend</h3>
+                        <p class="text-slate-600 mb-6">Setiap bahasa memiliki kekuatan dan kasus penggunaan yang ideal. Pilihan yang tepat bergantung pada kebutuhan proyek Anda.</p>
+                        <div id="lang-comparison">
+                            <div class="flex border border-slate-200 rounded-lg p-1 mb-4 bg-slate-100">
+                                <button data-lang="php" class="tab-btn flex-1 p-2 rounded-md text-sm font-medium transition">PHP</button>
+                                <button data-lang="python" class="tab-btn flex-1 p-2 rounded-md text-sm font-medium transition">Python</button>
+                                <button data-lang="nodejs" class="tab-btn flex-1 p-2 rounded-md text-sm font-medium transition">Node.js</button>
+                            </div>
+                            <div id="lang-details" class="transition-opacity duration-300"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">SQL vs. NoSQL</h3>
+                        <p class="text-slate-600 mb-6">Database adalah jantung dari aplikasi dinamis. Pahami dua paradigma utama untuk penyimpanan data.</p>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="border border-blue-200 bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-blue-800">SQL (Relasional)</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Struktur tabel yang ketat</li>
+                                    <li>Ideal untuk data terstruktur</li>
+                                    <li>Skalabilitas vertikal</li>
+                                    <li>Properti ACID</li>
+                                    <li>Contoh: MySQL, PostgreSQL</li>
+                                </ul>
+                            </div>
+                            <div class="border border-green-200 bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-green-800">NoSQL (Non-Relasional)</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Skema yang fleksibel (JSON, dll.)</li>
+                                    <li>Bagus untuk data tidak terstruktur</li>
+                                    <li>Skalabilitas horizontal</li>
+                                    <li>Model Konsistensi BASE</li>
+                                    <li>Contoh: MongoDB, Redis</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-slate-200">
+                            <h3 class="text-xl font-bold mb-4 text-slate-800">Jenis-jenis Basis Data NoSQL</h3>
+                            <div id="nosql-types-toggle" class="flex border border-slate-200 rounded-lg p-1 mb-4 bg-slate-100">
+                                <button data-nosql-type="document" class="nosql-tab-btn flex-1 p-2 rounded-md text-sm font-medium transition">Dokumen</button>
+                                <button data-nosql-type="keyvalue" class="nosql-tab-btn flex-1 p-2 rounded-md text-sm font-medium transition">Key-Value</button>
+                                <button data-nosql-type="widecolumn" class="nosql-tab-btn flex-1 p-2 rounded-md text-sm font-medium transition">Kolom Lebar</button>
+                                <button data-nosql-type="graph" class="nosql-tab-btn flex-1 p-2 rounded-md text-sm font-medium transition">Grafik</button>
+                            </div>
+                            <div id="nosql-info-display" class="bg-slate-50 p-4 rounded-lg text-slate-700 text-sm transition-opacity duration-300">
+                                <!-- Konten detail basis data NoSQL akan ditampilkan di sini -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Desain & Keamanan Basis Data</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-lg text-orange-700 mb-2">Pemodelan Data & Normalisasi (SQL)</h4>
+                                <p class="text-slate-600 text-sm mb-2">Proses membuat representasi data dan mengorganisir tabel untuk minimalkan redundansi dan tingkatkan integritas.</p>
+                                <ul class="list-disc list-inside text-sm text-slate-600">
+                                    <li>**Model Data:** Konseptual, Logis, Fisik.</li>
+                                    <li>**Normalisasi:** 1NF, 2NF, 3NF, BCNF.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-red-700 mb-2">Keamanan Basis Data</h4>
+                                <p class="text-slate-600 text-sm mb-2">Melindungi basis data dari akses tidak sah, kerusakan, atau penyalahgunaan.</p>
+                                <ul class="list-disc list-inside text-sm text-slate-600">
+                                    <li>Kontrol Akses, Enkripsi Data.</li>
+                                    <li>Audit & Pemantauan.</li>
+                                    <li>Pencadangan & Pemulihan.</li>
+                                    <li>Pembaruan & Patching.</li>
+                                    <li>Pencegahan Injeksi SQL.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">API: Jembatan Antar Aplikasi</h3>
+                        <p class="text-slate-600 mb-6">API (Antarmuka Pemrograman Aplikasi) memungkinkan komponen perangkat lunak berkomunikasi. RESTful dan SOAP adalah dua gaya arsitektur utama.</p>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="border border-blue-200 bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-blue-800">RESTful API</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Gaya arsitektur, berbasis sumber daya.</li>
+                                    <li>Menggunakan metode HTTP standar (GET, POST, PUT, DELETE).</li>
+                                    <li>Fleksibel, mendukung JSON (umum).</li>
+                                    <li>Stateless, Cacheable.</li>
+                                    <li>Ideal untuk aplikasi publik, mobile, microservices.</li>
+                                </ul>
+                            </div>
+                            <div class="border border-purple-200 bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-purple-800">SOAP API</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Protokol ketat, berbasis fungsi.</li>
+                                    <li>Menggunakan XML.</li>
+                                    <li>Kaku, server harus mempertahankan state klien.</li>
+                                    <li>Membutuhkan WS-Security untuk keamanan.</li>
+                                    <li>Ideal untuk sistem enterprise kompleks (perbankan).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="proses-praktik" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 text-slate-900">Proses & Praktik</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Dari kode ke pengguna. Pelajari tentang alur kerja deployment, kontrol versi dengan Git, dan praktik terbaik untuk keamanan dan kinerja.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Sistem Kontrol Versi: Git & GitHub</h3>
+                        <p class="text-slate-600 mb-6">Git adalah sistem kontrol versi terdistribusi yang esensial untuk melacak perubahan kode dan kolaborasi tim. GitHub adalah platform hosting Git untuk kolaborasi yang lebih baik.</p>
+                        <ul class="space-y-2 text-slate-600 list-disc list-inside text-sm">
+                            <li>**Manfaat Git:** Pelacakan perubahan, kerja tim efisien (branching), pemulihan mudah, riwayat lengkap.</li>
+                            <li>**Perintah Esensial:** `git init`, `clone`, `add`, `commit`, `push`, `pull`, `branch`, `merge`.</li>
+                            <li>**GitHub Flow:** Branching, commit, pull request, merge.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Alur Kerja Deployment</h3>
+                        <p class="text-slate-600 mb-6">Menerbitkan website adalah proses multi-tahap untuk memastikan kualitas dan stabilitas.</p>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white font-bold rounded-full flex items-center justify-center mr-4">1</div>
+                                <div><h4 class="font-semibold">Perencanaan</h4><p class="text-sm text-slate-500">Menentukan tujuan dan jadwal rilis.</p></div>
+                            </div>
+                             <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white font-bold rounded-full flex items-center justify-center mr-4">2</div>
+                                <div><h4 class="font-semibold">Pengembangan</h4><p class="text-sm text-slate-500">Penulisan kode di lingkungan lokal/pengembangan.</p></div>
+                            </div>
+                             <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white font-bold rounded-full flex items-center justify-center mr-4">3</div>
+                                <div><h4 class="font-semibold">Pengujian</h4><p class="text-sm text-slate-500">Verifikasi fungsionalitas di lingkungan staging.</p></div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white font-bold rounded-full flex items-center justify-center mr-4">4</div>
+                                <div><h4 class="font-semibold">Deployment</h4><p class="text-sm text-slate-500">Mendorong perubahan ke server produksi (live).</p></div>
+                            </div>
+                             <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white font-bold rounded-full flex items-center justify-center mr-4">5</div>
+                                <div><h4 class="font-semibold">Pemantauan</h4><p class="text-sm text-slate-500">Mengamati kinerja dan error setelah rilis.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4">Risiko Keamanan OWASP Top 10</h3>
+                         <p class="text-slate-600 mb-6">OWASP menyediakan daftar risiko keamanan aplikasi web yang paling kritis. Memahaminya adalah langkah pertama untuk membangun aplikasi yang aman.</p>
+                        <div class="chart-container">
+                            <canvas id="owaspChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4">Jenis-jenis Hosting Web</h3>
+                        <p class="text-slate-600 mb-6">Pilihan hosting yang tepat krusial untuk skala, kinerja, keamanan, dan anggaran aplikasi.</p>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+                            <div class="border border-slate-200 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-base text-slate-800 mb-1">Shared Hosting</h4>
+                                <p class="text-slate-600">Banyak situs di satu server. Murah, mudah. Performa terpengaruh situs lain.</p>
+                            </div>
+                            <div class="border border-slate-200 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-base text-slate-800 mb-1">VPS Hosting</h4>
+                                <p class="text-slate-600">Server fisik dibagi virtual. Sumber daya dedicated, kontrol lebih. Lebih mahal dari shared.</p>
+                            </div>
+                            <div class="border border-slate-200 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-base text-slate-800 mb-1">Dedicated Hosting</h4>
+                                <p class="text-slate-600">Seluruh server untuk satu situs. Performa, kontrol, keamanan tertinggi. Paling mahal.</p>
+                            </div>
+                            <div class="border border-slate-200 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-base text-slate-800 mb-1">Cloud Hosting</h4>
+                                <p class="text-slate-600">Jaringan server virtual. Skalabilitas & keandalan tinggi. Fleksibel, aman.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <section id="desain-arsitektur" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 text-slate-900">Desain & Arsitektur</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Fokus pada pengalaman pengguna (UX) dan struktur tingkat tinggi aplikasi Anda. Keputusan ini memengaruhi bagaimana pengguna berinteraksi dengan produk Anda dan bagaimana produk itu tumbuh.</p>
+                </div>
+                 <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                         <h3 class="text-2xl font-bold mb-4">Prinsip Desain UI/UX & Aksesibilitas</h3>
+                        <p class="text-slate-600 mb-6">Desain yang baik bukan hanya tentang estetika, tetapi tentang menciptakan pengalaman yang intuitif dan efektif bagi pengguna, serta dapat diakses oleh semua orang.</p>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-3 mt-1">&#10003;</span>
+                                <div><strong class="font-semibold">Kesederhanaan:</strong> Hindari kerumitan, fokus pada esensi.</div>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-green-500 mr-3 mt-1">&#10003;</span>
+                                <div><strong class="font-semibold">Konsistensi:</strong> Gunakan elemen dan pola yang sama.</div>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-green-500 mr-3 mt-1">&#10003;</span>
+                                <div><strong class="font-semibold">Hierarki Visual:</strong> Pandu mata pengguna ke elemen penting.</div>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-green-500 mr-3 mt-1">&#10003;</span>
+                                <div><strong class="font-semibold">Aksesibilitas (WCAG):</strong> Konten dapat diakses semua orang, termasuk penyandang disabilitas (Perceivable, Operable, Understandable, Robust).</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                         <h3 class="text-2xl font-bold mb-4">Pola Arsitektur Aplikasi</h3>
+                        <p class="text-slate-600 mb-6">Bagaimana Anda menyusun kode Anda memiliki implikasi besar pada skalabilitas, pemeliharaan, dan kecepatan pengembangan.</p>
+                        <div class="space-y-4 text-sm">
+                            <div>
+                                <h4 class="font-semibold text-lg">Monolitik</h4>
+                                <p class="text-slate-500">Aplikasi tunggal, digabungkan erat. Cepat untuk memulai, sulit untuk diskalakan.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg">Microservices</h4>
+                                <p class="text-slate-500">Kumpulan layanan kecil dan independen. Fleksibel dan dapat diskalakan, tetapi lebih kompleks.</p>
+                            </div>
+                             <div>
+                                <h4 class="font-semibold text-lg">Serverless</h4>
+                                <p class="text-slate-500">Tanpa manajemen server. Jalankan kode sebagai respons terhadap peristiwa. Hemat biaya, tetapi bisa memiliki *cold start*.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Website Statis vs. Dinamis & SPA vs. PWA</h3>
+                        <p class="text-slate-600 mb-6">Pahami perbedaan fundamental dalam cara konten disajikan dan interaksi pengguna ditangani.</p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="border border-pink-200 bg-pink-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-pink-800">Website Statis</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Konten tetap, berubah manual.</li>
+                                    <li>Interaktivitas terbatas.</li>
+                                    <li>HTML, CSS, JS sederhana.</li>
+                                    <li>Tidak perlu basis data.</li>
+                                </ul>
+                            </div>
+                            <div class="border border-teal-200 bg-teal-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-teal-800">Website Dinamis</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Konten berubah otomatis (input pengguna/basis data).</li>
+                                    <li>Fitur interaktif (login, pencarian).</li>
+                                    <li>Bahasa sisi server (PHP, Python, Node.js).</li>
+                                    <li>Terhubung dengan basis data.</li>
+                                </ul>
+                            </div>
+                            <div class="border border-indigo-200 bg-indigo-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-indigo-800">Single Page Application (SPA)</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Muat semua kode awal, update dinamis.</li>
+                                    <li>Transisi cepat, mirip aplikasi native.</li>
+                                    <li>Client-side rendering.</li>
+                                    <li>Sulit untuk SEO.</li>
+                                </ul>
+                            </div>
+                            <div class="border border-lime-200 bg-lime-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-lime-800">Progressive Web App (PWA)</h4>
+                                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-slate-700">
+                                    <li>Teknologi web, pengalaman mirip native.</li>
+                                    <li>Dapat diinstal, offline, notifikasi push.</li>
+                                    <li>Baik untuk SEO.</li>
+                                    <li>Biaya pengembangan lebih rendah.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="bg-slate-800 text-white text-center p-4 mt-8">
+            <p class="text-sm">Dasbor Interaktif dibuat dari "Modul Pembelajaran Website Lengkap" dan "Modul Pembelajaran Basis Data Lengkap".</p>
+        </footer>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const langData = {
+        php: {
+            title: "PHP",
+            pros: ["Mudah dipelajari", "Komunitas besar", "Banyak CMS (WordPress)", "Hosting murah"],
+            cons: ["Performa lebih lambat", "Penamaan fungsi tidak konsisten", "Banyak kode lama"],
+            use_case: "Sistem Manajemen Konten (CMS), E-commerce, website dinamis."
+        },
+        python: {
+            title: "Python",
+            pros: ["Sintaks bersih dan mudah dibaca", "Sangat serbaguna (web, AI, data)", "Pustaka yang luas (Django, Flask)"],
+            cons: ["Lebih lambat dari bahasa terkompilasi", "GIL membatasi multithreading", "Konsumsi memori lebih tinggi"],
+            use_case: "Pengembangan Web, Ilmu Data, AI/ML, Otomatisasi."
+        },
+        nodejs: {
+            title: "Node.js",
+            pros: ["Performa tinggi untuk I/O", "Satu bahasa (JS) untuk front & back", "Ekosistem npm yang besar", "Sangat skalabel"],
+            cons: ["'Callback hell' (diatasi dengan async/await)", "Tidak ideal untuk tugas CPU-intensif", "Ekosistem yang cepat berubah"],
+            use_case: "Aplikasi real-time (chat, game), API, Microservices."
+        }
+    };
+
+    function renderLangDetails(lang) {
+        const data = langData[lang];
+        const detailsContainer = document.getElementById('lang-details');
+        detailsContainer.style.opacity = 0;
+        
+        setTimeout(() => {
+            detailsContainer.innerHTML = `
+                <h4 class="font-bold text-xl mb-3 text-slate-800">${data.title}</h4>
+                <div class="grid sm:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <h5 class="font-semibold mb-2 text-green-700">Kelebihan</h5>
+                        <ul class="space-y-1 list-disc list-inside text-slate-600">
+                            ${data.pros.map(pro => `<li>${pro}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-red-700">Kekurangan</h5>
+                         <ul class="space-y-1 list-disc list-inside text-slate-600">
+                            ${data.cons.map(con => `<li>${con}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-200">
+                     <h5 class="font-semibold mb-2 text-blue-700">Kasus Penggunaan Utama</h5>
+                     <p class="text-sm text-slate-600">${data.use_case}</p>
+                </div>
+            `;
+            detailsContainer.style.opacity = 1;
+        }, 150);
+    }
+
+    const langComparisonContainer = document.getElementById('lang-comparison');
+    langComparisonContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-btn')) {
+            const lang = e.target.dataset.lang;
+            
+            langComparisonContainer.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            renderLangDetails(lang);
+        }
+    });
+
+    langComparisonContainer.querySelector('.tab-btn[data-lang="php"]').click();
+
+    const owaspData = {
+        labels: [
+            'A01: Broken Access Control',
+            'A02: Cryptographic Failures',
+            'A03: Injection',
+            'A04: Insecure Design',
+            'A05: Security Misconfiguration',
+            'A06: Vulnerable Components',
+            'A07: Auth Failures',
+            'A08: Integrity Failures',
+            'A09: Logging Failures',
+            'A10: SSRF'
+        ],
+        datasets: [{
+            label: 'OWASP Top 10 Risks',
+            data: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10], // Equal parts for representation
+            backgroundColor: [
+                '#3b82f6', '#16a34a', '#f97316', '#ef4444',
+                '#8b5cf6', '#facc15', '#ec4899', '#14b8a6',
+                '#64748b', '#0ea5e9'
+            ],
+            hoverOffset: 4
+        }]
+    };
+
+    const owaspConfig = {
+        type: 'doughnut',
+        data: owaspData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                         boxWidth: 12,
+                         font: { size: 10 }
+                    }
+                },
+                title: {
+                    display: false
+                }
+            }
+        },
+    };
+
+    const ctx = document.getElementById('owaspChart').getContext('2d');
+    new Chart(ctx, owaspConfig);
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileNav = document.getElementById('mobile-nav');
+    const sections = document.querySelectorAll('.content-section');
+
+    function navigateTo(hash) {
+        if (!hash) hash = '#dasar-web';
+
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        const activeSection = document.querySelector(hash);
+        if (activeSection) {
+            activeSection.classList.add('active');
+        }
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === hash) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        if (mobileNav.value !== hash) {
+            mobileNav.value = hash;
+        }
+        
+        window.location.hash = hash;
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const hash = e.currentTarget.getAttribute('href');
+            navigateTo(hash);
+        });
+    });
+
+    mobileNav.addEventListener('change', (e) => {
+        navigateTo(e.target.value);
+    });
+
+    const initialHash = window.location.hash || '#dasar-web';
+    navigateTo(initialHash);
+
+
+    const boxModelContainer = document.getElementById('box-model-container');
+    const boxModelLabel = document.getElementById('box-model-label');
+    const boxModelElements = {
+        margin: document.getElementById('margin'),
+        border: document.getElementById('border'),
+        padding: document.getElementById('padding'),
+        content: document.getElementById('content')
+    };
+    
+    for (const [name, el] of Object.entries(boxModelElements)) {
+        el.addEventListener('mouseover', () => {
+            boxModelLabel.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+            el.style.transform = 'scale(1.05)';
+        });
+        el.addEventListener('mouseout', () => {
+             el.style.transform = 'scale(1)';
+        });
+    }
+    boxModelContainer.addEventListener('mouseleave', () => {
+        boxModelLabel.textContent = '';
+    });
+
+    const nosqlDetails = {
+        document: {
+            title: "Basis Data Berorientasi Dokumen",
+            content: `
+                <p class="mb-2">Menyimpan data dalam dokumen semi-terstruktur seperti JSON. Setiap dokumen dapat memiliki skema yang berbeda.</p>
+                <p class="mb-2"><strong>Kelebihan:</strong> Skema fleksibel, mudah untuk menyimpan data hierarkis, skalabilitas horizontal.</p>
+                <p class="mb-2"><strong>Kekurangan:</strong> Join yang kompleks sulit dilakukan.</p>
+                <p><strong>Contoh:</strong> MongoDB, CouchDB.</p>
+            `
+        },
+        keyvalue: {
+            title: "Basis Data Key-Value",
+            content: `
+                <p class="mb-2">Menyimpan data sebagai koleksi pasangan kunci-nilai sederhana. Kunci unik digunakan untuk mengambil nilai.</p>
+                <p class="mb-2"><strong>Kelebihan:</strong> Sangat cepat untuk operasi baca/tulis, skalabilitas tinggi, sederhana.</p>
+                <p class="mb-2"><strong>Kekurangan:</strong> Tidak cocok untuk kueri kompleks.</p>
+                <p><strong>Contoh:</strong> Redis, DynamoDB.</p>
+            `
+        },
+        widecolumn: {
+            title: "Basis Data Kolom Lebar",
+            content: `
+                <p class="mb-2">Mirip dengan relasional, tetapi kolom dapat bervariasi per baris. Dirancang untuk data yang sangat besar dan terdistribusi.</p>
+                <p class="mb-2"><strong>Kelebihan:</strong> Skalabilitas ekstrem, performa tinggi untuk data terdistribusi.</p>
+                <p class="mb-2"><strong>Kekurangan:</strong> Lebih kompleks untuk dikelola, tidak cocok untuk transaksi ACID yang ketat.</p>
+                <p><strong>Contoh:</strong> Apache Cassandra, HBase.</p>
+            `
+        },
+        graph: {
+            title: "Basis Data Grafik",
+            content: `
+                <p class="mb-2">Menggunakan struktur grafik dengan node (entitas) dan edge (hubungan). Dirancang untuk data dengan hubungan kompleks.</p>
+                <p class="mb-2"><strong>Kelebihan:</strong> Sangat efisien untuk menanyakan hubungan, model data intuitif.</p>
+                <p class="mb-2"><strong>Kekurangan:</strong> Kurva pembelajaran yang curam.</p>
+                <p><strong>Contoh:</strong> Neo4j, Amazon Neptune.</p>
+            `
+        }
+    };
+
+    const nosqlToggleContainer = document.getElementById('nosql-types-toggle');
+    const nosqlInfoDisplay = document.getElementById('nosql-info-display');
+
+    function renderNoSQLDetails(type) {
+        const data = nosqlDetails[type];
+        nosqlInfoDisplay.style.opacity = 0;
+        
+        setTimeout(() => {
+            nosqlInfoDisplay.innerHTML = `
+                <h4 class="font-bold text-base mb-2 text-slate-800">${data.title}</h4>
+                ${data.content}
+            `;
+            nosqlInfoDisplay.style.opacity = 1;
+        }, 150);
+    }
+
+    nosqlToggleContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('nosql-tab-btn')) {
+            const type = e.target.dataset.nosqlType;
+            
+            nosqlToggleContainer.querySelectorAll('.nosql-tab-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            renderNoSQLDetails(type);
+        }
+    });
+
+    nosqlToggleContainer.querySelector('.nosql-tab-btn[data-nosql-type="document"]').click();
+});
+</script>
+
+</body>
+</html>
