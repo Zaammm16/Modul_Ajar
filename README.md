@@ -27,7 +27,7 @@ Karena file saat ini hanya berupa HTML statis, Anda dapat menjalankannya dengan 
 
 1.  **Clone repositori ini:**
     ```bash
-    git clone [https://github.com/Zaammm16/Modul_ajar.git](https://github.com/Zaammm16/Modul_Ajar.git)
+    git clone [https://github.com/Zaammm16/Modul_ajar.git](https://github.com/Zaammm16/Modul_Ajar)
     ```
 2.  **Buka file:**
     Klik kanan pada file `index.html` lalu pilih **Open with Chrome** (atau browser lain).
